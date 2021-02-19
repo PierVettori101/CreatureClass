@@ -1,0 +1,87 @@
+﻿
+<style>
+
+    .houseButtonssss {
+        background-color: white;
+        border-color: black;
+        border-radius: 8px;
+        color: black;
+        width: 120px;
+        height: auto;
+        font-family: appleChance, Helvetica, sans-serif;
+        font-weight: 600;
+        font-size: 20px;
+    }
+</style>
+
+
+@using CreatureClass2.Models;
+@{
+
+    List<Message> messages = ViewBag.Messages;
+    string teamName = ViewBag.TeamName;
+}
+@using (Html.BeginForm("SabiSend", "Message", FormMethod.Get))
+{
+    <body style="background-image:none!important">
+
+       <div style="padding-top:70px">
+
+       </div>
+        @foreach (Message m in messages)
+        {
+            <input type="hidden" id="@m.Id" value="@m.Id" />
+
+
+
+            if (m.SentFrom == ViewBag.sabiId && m.SentTo == teamName)
+            {
+                    <div style="max-width:initial;padding-left: 55%; padding-top:10px">
+                        <div style="background-color: #bbf5f1;border-radius:12px ">
+                            @m.Body
+                        </div>
+
+                    </div>
+
+
+                    @*<div style="padding-right:20%">
+
+                        </div>*@
+                }
+
+                if (m.SentFrom == teamName)
+                {
+                   
+                        <div style="max-width:50%;padding-left: 3%; padding-top:10px">
+                            <div style=" background-color: #40feb3;border-radius:12px ">
+                                @m.Body
+                            </div>
+                        </div>
+                   
+                }
+          
+
+        }
+
+        @*@if (m.Body != null)
+            {
+                <div>
+                    @m.Body
+                </div>
+            }*@
+        <input type="hidden" value="@teamName" name="team" />
+
+        <div>
+
+
+
+            <input type="text" id="sendBody" name="sendBody" style="width:50%;
+                                                                     height:40px;" />
+            <input type="submit" value="Send" name="Send" class="houseButtonssss" />
+
+
+        </div>
+    </body>
+}
+
+

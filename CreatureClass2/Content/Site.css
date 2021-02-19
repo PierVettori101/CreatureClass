@@ -1,0 +1,192 @@
+﻿body {
+    background-image: url(Images/wallPaperRepeat.jpg);
+    background-repeat: repeat;
+    background-size: contain;
+    /*padding-top: 50px;
+    padding-bottom: 20px;*/
+}
+
+/* Set padding to keep content from hitting the edges */
+.body-content {
+    text-align: center;
+    padding-left: 15px;
+    padding-right: 15px;
+}
+
+/* Override the default bootstrap behavior where horizontal description lists 
+   will truncate terms that are too long to fit in the left column 
+*/
+.dl-horizontal dt {
+    white-space: normal;
+}
+
+/* Set width on the form input elements since they're 100% wide by default */
+input,
+select,
+textarea {
+    max-width: 280px;
+}
+
+
+
+
+
+.typo {
+    text-align: center;
+    border-radius: 10px;
+    font-family: appleChance, Helvetica, sans-serif;
+    font-weight: 600;
+    color: black;
+    font-size: 22px;
+    /* background-color: rgba(255, 255, 255, 0.20);*/
+}
+
+
+.sos {
+    display: flex;
+    align-items: end
+}
+
+    .sos div {
+        padding-left: 80%;
+    }
+
+    .sos p {
+        padding-left: 65%;
+    }
+
+    .sos img {
+        padding-top: 10px;
+        width: 35px;
+        height: auto;
+        cursor: pointer;
+    }
+
+
+.aniAni {
+    text-align: center;
+    border-radius: 10px;
+    font-family: appleChance, Helvetica, sans-serif;
+    font-weight: 600;
+    color: black;
+    font-size: 22px;
+    background-color: rgba(255, 0, 0, 0.51);
+    position: relative;
+    animation: none infinite;
+    animation-duration: 0.5s;
+    animation-iteration-count: 1;
+    /*animation-play-state: paused*/
+}
+
+.pointAni {
+    width: 100px;
+    height: 100px;
+    font-size: 35px;
+    position: relative;
+    animation: none infinite;
+    border-radius: 50px;
+    animation-duration: 1s;
+    opacity: 0;
+    animation-iteration-count: 1;
+    background-image: url(Images/dollar.png);
+    background-size: 100px 100px;
+    background-color: rgba(252, 255, 0, 0);
+}
+
+.textFasion {
+   
+    
+    border-radius: 10px;
+    padding: 10px;
+    margin: 10px 0;
+    align-content:center;
+   
+        
+}
+    .textFasion div {
+        background-color: #bbf5f1;
+        padding-left: 30%
+    }
+
+.darker {
+    
+}
+
+    .darker div {
+        background-color: #80ebc1;
+        padding-right: 30%
+    }
+
+
+@keyframes mymove {
+
+    from {
+        left: 200px;
+    }
+
+    to {
+        left: 0px;
+    }
+}
+
+@keyframes points {
+
+
+    0% {
+        top: 200px;
+    }
+
+    50% {
+        top: 0px;
+        background-color: rgba(252, 255, 0, 1);
+        opacity: 1;
+    }
+
+    75% {
+        transition: transform 0.5s;
+        transform-style: preserve-3d;
+        transform: rotateY(360deg);
+    }
+
+    100% {
+        top: 100px;
+        background-color: rgba(252, 255, 0, 0.00);
+        opacity: 0;
+    }
+}
+
+@keyframes minusPoints {
+
+
+    0% {
+        top: 0px;
+        /*background-color: rgba(255, 255, 255, 0.0)*/
+    }
+
+    50% {
+        top: 200px;
+        background-color: rgba(252, 255, 0, 1);
+        opacity: 1;
+    }
+    /*75% {
+        top: 120px;
+        background-color: rgba(50, 60, 50, 0.60)
+    }*/
+    100% {
+        top: 100px;
+        background-color: rgba(252, 255, 0, 0.00);
+        opacity: 0;
+    }
+}
+
+
+@font-face {
+    font-family: appleChance;
+    src: url(Fonts/AppleChanceryRegular.ttf) format('truetype');
+}
+
+@font-face {
+    font-family: escargo;
+    src: url(Fonts/ESKARGOT.ttf) format('truetype');
+}
+

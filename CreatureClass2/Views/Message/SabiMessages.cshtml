@@ -1,0 +1,45 @@
+﻿@using CreatureClass2.Models;
+
+@{
+    List<Team> teams = ViewBag.Teams;
+    int counter = 0;
+}
+
+@using (Html.BeginForm("SabiMessages", "Message", FormMethod.Get))
+{
+
+    <div style="padding-top:10%">
+
+    </div>
+    <body style="background-image:none; padding-top:10%">
+
+        @if(teams.Count==0)
+        {
+            <h1>@ViewBag.noTeamsMessage</h1>
+        }
+        <input type="hidden" id="teamName" name="teamName" />
+
+        @foreach (Team t in teams)
+        {
+            counter++;
+
+            <div>
+                <input type="submit" value="@t.UserName" name="@t.Id" onclick="Team(this.name)" style=" 
+                                                                                    font-size:20px;
+                                                                                    font-weight: 600; background-color:burlywood;
+                                                                                        font-family:appleChance, Helvetica, sans-serif;" />
+            </div>
+
+        }
+    </body>
+}
+
+<script>
+    function Team(x) {
+        
+        var TeamName = document.getElementById("teamName");
+        TeamName.value = x;
+
+
+    }
+</script>

@@ -1,0 +1,385 @@
+﻿
+@using CreatureClass2.Models;
+@model LoginViewModel
+
+<style>
+
+    .houseButtonssss {
+        background-color: white;
+        border-color: black;
+        border-radius: 8px;
+        color: black;
+        width: 120px;
+        height: auto;
+        font-family: appleChance, Helvetica, sans-serif;
+        font-weight: 600;
+        font-size: 20px;
+    }
+
+
+</style>
+
+
+@{
+    string msg = ViewBag.msg;
+    List<House> houses = ViewBag.House;
+    Team t = ViewBag.Team;
+    int max = 0;
+
+    if (ViewBag.Max != null)
+    {
+        max = ViewBag.Max;
+    }
+
+   
+
+
+}
+
+
+@using (Html.BeginForm("Register", "Account", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+{
+    @Html.AntiForgeryToken()
+    <body>
+
+        <div style="padding-top:70px">
+
+        </div>
+
+
+
+        <div style="top:-5%">
+            <img src="~/Content/Images/Logo.png" style="width:200px; height:auto" />
+        </div>
+
+
+
+        <section class="typo">
+            <div id="welcomeToClass">
+                Hello and welcome, class!
+            </div>
+        </section>
+
+        <div id="Error" class="aniAni">
+
+
+        </div>
+        <div class="typo" id="takenHouse">
+            @msg
+        </div>
+
+
+
+
+        @if (t != null && t.Counter <= max)
+        {
+            <div class="typo">
+                @Html.ActionLink("Procede as " + t.UserName + " ", "Questions", new { Name = t.UserName, LocationId = t.LocationId, Score = t.Score, HouseName = t.HouseName, Counter = t.Counter }, new { @style = "color:black" })
+            </div>
+        }
+        else if (t != null && t.Counter > max)
+        {
+            <div class="typo">
+                @Html.ActionLink("Procede as " + t.UserName + " ", "Professor", new { Name = t.UserName, LocationId = t.LocationId, Score = t.Score, HouseName = t.HouseName, Counter = t.Counter }, new { @style = "color:black" })
+            </div>
+        }
+
+
+    <form id="myForm" autocomplete="off" action="Welcome">
+
+        @Html.TextBoxFor(m => m.Name, new { style = "display: none;", id = "teamNameSubmit" })
+        @Html.TextBoxFor(m => m.House, new { style = "display: none;", id = "HouseNameSelection" })
+        @*<input type="hidden" value="" name="teamNameSubmit" id="teamNameSubmit" />
+        <input type="hidden" id="HouseNameSelection" name="HouseNameSelection" />*@
+
+        <div id="teamSection" @*style="display:unset"*@>
+            <section class="typo">
+                <div>
+                    Please Enter Your Team Name
+                </div>
+            </section>
+            <div>
+
+                <input type="text" name="TeamName" id="team" style="text-align: center; font-weight: 600;
+                                                                        font-size: 22px;
+                                                                        background-color:rgba(255, 255, 255, 0.90); border-color:black;
+                                                                        border-radius:6px; border-width: 10px;
+                                                                        font-family: appleChance, Helvetica, sans-serif;" />
+            </div>
+            @if (!User.Identity.Name.Equals("Sabi@FantasticCreatures.com"))
+            {
+            <div>
+                <input type="button" value="Enter" style="background-color:white; border-color:black;
+                                                                            border-radius:8px ;
+                                                                                color:black; width:120px; height:auto;
+                                                                                font-family:appleChance, Helvetica, sans-serif; font-weight:600;
+                                                                                font-size:20px;
+                                                                                            " onclick="clearNameSection()" />
+            </div>
+            }
+        </div>
+
+        @*<div class="dropdown">
+
+            <a data-toggle="dropdown" href="#" style="font-family: 'Apple Chancery';
+                                                                  width: 300px; font-weight: 600;
+                                                                    color: black; font-size: 22px;
+                                                                        background-color: rgba(255, 255, 255, 0.20);">
+                Please Select Your House
+                <span class="caret"></span>
+
+            </a>
+            <table class="dropdown-menu" role="menu" style="/*background-image: url('../../Content/Images/wallPaper.jpg');*/
+                                                                            margin-left: 50%;
+                                                                            margin-right: auto;
+                                                                            background-color: rgba(255, 255, 255, 0.00);
+                                                                            border:none">
+
+                @foreach (House h in houses)
+                {
+                    <tr>
+                        <td>
+                            <input type="button" value="@h.Name" style="background-color:white; border-color:black;
+                                                                            border-radius:8px ;
+                                                                                color:black; width:120px; height:auto;
+                                                                                font-family:'Apple Chancery'; font-weight:600;
+                                                                                font-size:20px;
+                                                                                            " onclick="errorMsg(this.value)" />
+                        </td>
+                    </tr>
+                }
+
+
+            </table>
+        </div>*@
+
+
+
+
+    </form>
+
+    </body>
+}
+
+
+
+<script>
+
+
+    function sumStuff() {
+
+        var sosMessage = document.getElementById("sosMessage");
+
+        if (sosMessage.style.display === "none") {
+
+            sosMessage.style.display = "unset";
+
+
+                }
+                else {
+                    sosMessage.style.display = "none";
+                }
+
+
+
+
+
+    }
+
+        function sosMsg() {
+
+
+        var url = '@Url.Action("NewTeam", "Admin")';
+        window.location.href = url;
+
+
+    }
+</script>
+
+<script>
+
+
+
+
+
+        function show() {
+
+            //var house = document.getElementById("houseSection")
+            //var team = document.getElementById("teamSection")
+
+
+            var teamName = document.getElementById("team");
+
+            var er = document.getElementById("Error");
+            
+            if (teamName.value == "") {
+
+                er.innerHTML = "Please Enter a Team Name";
+            }
+            
+
+        }
+
+
+    function clearNameSection() {
+
+        var teamName = document.getElementById("team");
+
+        var teamSection = document.getElementById("teamSection");
+
+        var er = document.getElementById("Error");
+        er.style.animationName = "none";
+
+
+        if (teamName.value == "") {
+
+
+            er.innerHTML = "Please Enter a Team Name";
+
+
+            playAnimation(er);
+
+            setTimeout(stopAnimation, 500);
+        }
+        //else if (teamName.value.includes("$") == true) {
+        //    er.innerHTML = "Team Names cannot contain '$'";
+        //    playAnimation(er);
+
+        //    setTimeout(stopAnimation, 500);
+        //}
+        else {
+
+            document.getElementById("takenHouse").innerHTML = "";
+
+            var setTeamNameforSubmission = document.getElementById("teamNameSubmit");
+            setTeamNameforSubmission.value = teamName.value;
+            er.innerHTML = "";
+            teamSection.innerHTML = "";
+            document.getElementById("welcomeToClass").innerHTML = "Welcome " + teamName.value + "! Please select a house:";
+
+            //var butArray = ["", "", "", "", ""];
+
+
+
+                var btnPixie = document.createElement("BUTTON");
+            btnPixie.innerHTML = "Pixie";
+                btnPixie.className = "houseButtonssss";
+                btnPixie.onclick = function () {
+                    var house = document.getElementById("HouseNameSelection");
+                    house.value = "Pixie";
+
+                    document.getElementById("myForm").submit();
+
+                    @*var url = '@Url.Action("Login2", "Account", new { teamName = "__id__" })';
+                    window.location.href = url.replace('__id__', "help");
+                    //window.location.href = '@Url.Action("", "")' + .value;*@
+                }
+
+            teamSection.appendChild(btnPixie);
+
+            var btnAlba = document.createElement("BUTTON");
+            btnAlba.innerHTML = "Alba";
+            btnAlba.className = "houseButtonssss";
+            btnAlba.onclick = function () {
+                var house = document.getElementById("HouseNameSelection");
+                house.value = "Alba";
+
+                document.getElementById("myForm").submit();
+            }
+
+            teamSection.appendChild(btnAlba);
+
+            var btnWallace = document.createElement("BUTTON");
+            btnWallace.innerHTML = "Wallace";
+            btnWallace.className = "houseButtonssss";
+            btnWallace.onclick = function () {
+                var house = document.getElementById("HouseNameSelection");
+                house.value = "Wallace";
+
+                document.getElementById("myForm").submit();
+            }
+
+            teamSection.appendChild(btnWallace);
+
+            var btnUnseely = document.createElement("BUTTON");
+            btnUnseely.innerHTML = "Unseelie";
+            btnUnseely.className = "houseButtonssss";
+            btnUnseely.onclick = function () {
+                var house = document.getElementById("HouseNameSelection");
+                house.value = "Unseelie";
+
+                document.getElementById("myForm").submit();
+            }
+
+            teamSection.appendChild(btnUnseely);
+
+            var btnSkye = document.createElement("BUTTON");
+            btnSkye.innerHTML = "Skye";
+            btnSkye.className = "houseButtonssss";
+            btnSkye.onclick = function () {
+                var house = document.getElementById("HouseNameSelection");
+                house.value = "Skye";
+
+                document.getElementById("myForm").submit();
+            }
+
+            teamSection.appendChild(btnSkye);
+
+
+        }
+
+
+    }
+
+
+        function errorMsg(x) {
+
+
+            var teamName = document.getElementById("team");
+
+            var er = document.getElementById("Error");
+            er.style.animationName = "none";
+
+
+            if (teamName.value == "") {
+
+
+                er.innerHTML = "Please Enter a Team Name";
+
+
+                playAnimation(er);
+
+                setTimeout(stopAnimation, 500);
+            }
+            else if (teamName.value.endsWith("$") == true) {
+                er.innerHTML = "Team Names cannot end with $";
+                playAnimation(er);
+
+                setTimeout(stopAnimation, 500);
+            }
+            else {
+                var house = document.getElementById("HouseNameSelection");
+                house.value = x;
+
+                document.getElementById("myForm").submit();
+            }
+
+
+        }
+
+        function playAnimation(x) {
+            // var el = document.getElementById('Error');
+            x.style.animationName = "mymove";
+            //el.offsetLeft; /* trigger reflow */
+            //el.style.animation = null;
+            //el.style.animationPlayState = "paused";
+        }
+
+        function stopAnimation() {
+
+            var er = document.getElementById("Error");
+            er.style.animationName = "none";
+        }
+
+
+</script>

@@ -1,0 +1,168 @@
+﻿
+@{
+
+}
+<style>
+    .sos {
+        display: flex;
+        align-items: end
+    }
+
+        .sos div {
+            padding-left: 80%;
+        }
+
+        .sos img {
+            width: 35px;
+            height: auto;
+        }
+</style>
+
+
+@using CreatureClass2.Models
+@{
+    Team t = ViewBag.team;
+
+}
+
+@*@using (Html.BeginForm("Score", "Home", FormMethod.Get))
+    {*@
+<input type="hidden" value="@t.UserName" id="xxxx" name="xxxx" />
+
+
+<div class="sos">
+    <div>
+        <img src="@Url.Content("~/Content/Images/sos.png")" id="sos" onclick="show()">
+    </div>
+</div>
+
+<div class="sos" id="sosMessage" style="display:none; font-weight:600">
+    <p id="spotHelpMessage" style="padding-left:55%; font-family:appleChance, Helvetica, sans-serif;">
+        Please return the kit back at the start point.
+    </p>
+    <p>
+        <input type="button" value="Get in Touch" onclick="getInTouch()" style="font-weight: 600; background-color:burlywood;
+                                                                                        font-family:appleChance, Helvetica, sans-serif;" />
+    </p>
+</div>
+
+<div style="padding-left:70%;
+                        ">
+    <div class="pointAni" id="point">
+
+    </div>
+</div>
+
+<div>
+    <div class="typo">
+        Go to Location
+    </div>
+    <div style="font-family:escargo, Helvetica, sans-serif; font-size:130px">
+
+        X
+    </div>
+</div>
+
+<div>
+    <div class="typo">
+        You're almost done! Find the last unicorn and open the book of secrets with its name
+    </div>
+</div>
+
+<input type="text" name="answer" id="creature" style="text-align: center; font-weight: 600; font-size: 22px;
+                                                                        background-color:white; border-color:black;
+                                                                        border-radius:6px; border-width: 10px;
+                                                                        font-family: appleChance, Helvetica, sans-serif;" />
+
+<div style="padding-top:2%">
+    <input type="submit" name="Finish" value="Finish" onclick="finish()" style="font-size:20px; font-weight: 600; background-color:burlywood; font-family:appleChance, Helvetica, sans-serif;" />
+</div>
+
+
+
+<script>
+
+
+
+    var team = document.getElementById("xxxx");
+
+    function show() {
+
+        var sosMessage = document.getElementById("sosMessage");
+
+
+
+
+        if (sosMessage.style.display === "none") {
+            sosMessage.style.display = "unset";
+
+
+                }
+                else {
+                    sosMessage.style.display = "none";
+                }
+    }
+
+    function getInTouch() {
+
+        // var team = document.getElementById("teamName");
+        minusPoints(-1);
+
+        var url = '@Url.Action("MessageScreen", "Message", new { user = "__id__" })';
+        window.location.href = url.replace('__id__', team.value);
+        }
+
+    function finish() {
+        var inp = document.getElementById("creature");
+
+        if (inp.value.toUpperCase().trim() == "RHINO") {
+
+            coinStart();
+
+            setTimeout(submitFinish, 900);
+
+
+        }
+        else {
+            minusPoints(-1);
+        }
+    }
+
+    function submitFinish() {
+         var url = '@Url.Action("Score", "Home", new { teamName = "TEAMVALUE" })';
+            window.location.href = url.replace('TEAMVALUE', team.value);
+    }
+
+        function coinStart() {
+            var coin = document.getElementById("point");
+
+            coin.style.animationName = "points";
+
+            setTimeout(coinStop, 1200);
+
+
+        }
+
+        function minusPoints(x) {
+            var coin = document.getElementById("point");
+            coin.innerHTML = x;
+
+            coin.style.animationName = "minusPoints";
+
+            setTimeout(coinStop, 1200);
+
+
+        }
+        function coinStop() {
+            var coin = document.getElementById("point");
+
+            coin.style.animationName = "none";
+
+            coin.innerHTML = "";
+
+
+        }
+
+
+
+</script>

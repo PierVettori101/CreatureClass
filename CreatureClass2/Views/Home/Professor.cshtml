@@ -1,0 +1,251 @@
+﻿@using CreatureClass2.Models
+@{
+    Team t = ViewBag.team;
+    Professor p = ViewBag.Prof;
+
+    List<Message> messages = ViewBag.Messages;
+
+    int msgCount = messages.Count();
+
+}
+<style>
+    .sos {
+        display: flex;
+        align-items: end
+    }
+
+        .sos div {
+            padding-left: 80%;
+        }
+
+        .sos img {
+            width: 35px;
+            height: auto;
+        }
+</style>
+<form id="myForm">
+
+
+    <input type="hidden" value="@t.UserName" id="teamName" name="teamName" />
+    <input type="hidden" value="@t.HouseName" name="houseName" />
+    
+    <input type="hidden" value="@t.Score" name="score" id="score" />
+
+    <div style="padding-top:50px">
+
+    </div>
+    <div>
+
+
+        <div class="sos">
+            <div>
+                <img src="@Url.Content("~/Content/Images/sos.png")" id="sos" onclick="show()">
+            </div>
+        </div>
+        @if (msgCount > 0)
+        {
+            <div style="font-size:20px; padding-left:80%" onclick="getInTouch()">
+                You have @msgCount new messages
+            </div>
+        }
+
+        <div class="sos" id="sosMessage" style="display:none; font-weight:600">
+            <p id="spotHelpMessage">
+                <input type="button" value="Trouble Finding the Professor?" onclick="spotHelp()" style="font-weight: 600; background-color:burlywood;
+                                                                                        font-family:appleChance, Helvetica, sans-serif;" />
+            </p>
+            <p id="questionHelpMessage">
+                <input type="button" value="Trouble With The Question" onclick="questionHelp()" style="font-weight: 600; background-color:burlywood;
+                                                                                        font-family:appleChance, Helvetica, sans-serif;" />
+            </p>
+            <p>
+                <input type="button" value="Get in Touch" onclick="getInTouch()" style="font-weight: 600; background-color:burlywood;
+                                                                                        font-family:appleChance, Helvetica, sans-serif;" />
+            </p>
+        </div>
+
+        <div style="padding-left:70%;">
+            <div class="pointAni" id="point">
+
+            </div>
+        </div>
+
+
+        <div class="typo">
+            Good job!
+        </div>
+        <div style="padding-top:10px">
+
+        </div>
+    <div class="typo">
+        You must now find the professor. She is hiding somewhere around:
+    </div>
+        <div style="font-family: escargo, Helvetica, sans-serif; font-size:130px; padding-top:2%; padding-bottom:2% ">
+            P
+        </div>
+
+        <div class="typo">
+            If you solve her riddle you will know the last location is:
+        </div>
+
+
+
+
+        <input type="text" name="answer" id="answer" style="text-align: center;
+                                                                    font-weight: 600; font-size: 22px;
+                                                                    background-color: rgba(255, 255, 255, 0.90);
+                                                                    border-color: black; border-radius: 6px;
+                                                                    border-width: 10px; font-family: appleChance, Helvetica, sans-serif;" />
+
+        <div style="padding-top:2%; padding-bottom:2%">
+
+        </div>
+
+        <div>
+            <input type="button" value="Enter Answer" onclick="answerQuestion()" style="font-size: 20px;
+                                                                                        font-weight: 600; background-color:burlywood;
+                                                                                            font-family:appleChance, Helvetica, sans-serif;" />
+        </div>
+    </div>
+</form>
+<div id="Error" class="aniAni">
+
+</div>
+
+<script>
+
+    var score = document.getElementById("score");
+
+
+
+
+    function answerQuestion() {
+        var answer = "x";
+
+
+
+        var inp = document.getElementById("answer");
+
+        if (inp.value.toUpperCase().trim() == answer.toUpperCase()) {
+
+            score.value = parseInt(score.value) + 3;
+            coinStart();
+
+            setTimeout(submitProf, 900);
+
+        }
+        else {
+            var error = document.getElementById("Error")
+            error.innerHTML = "try again";
+
+            error.style.animationName = "mymove";
+            setTimeout(stopAnimation, 500);
+
+            //var score = document.getElementById("score");
+
+            score.value = parseInt(score.value) - 1;
+
+            minusPoints(-1);
+            
+        }
+
+    }
+
+    function submitProf() {
+        document.getElementById("myForm").submit();
+    }
+
+    function show() {
+
+        var sosMessage = document.getElementById("sosMessage");
+
+
+
+
+        if (sosMessage.style.display === "none") {
+            sosMessage.style.display = "unset";
+
+
+                }
+                else {
+                    sosMessage.style.display = "none";
+                }
+    }
+
+    function getInTouch() {
+
+        var team = document.getElementById("teamName");
+
+        score.value = parseInt(score.value) - 4;
+
+        var url = '@Url.Action("MessageScreen", "Message", new { longString = "__id__"})';
+        minusPoints(-1);
+        var x = url.replace('__id__', team.value + "$" + parseInt(score.value));
+
+        window.location.href = x;
+
+        //+ ", Score =" + parseInt(score.value)
+    }
+
+
+    function spotHelp() {
+        var error = document.getElementById("spotHelpMessage");
+        error.style.paddingLeft = "55%";
+        error.style.fontFamily = "appleChance, Helvetica, sans-serif";
+        error.innerHTML = "She’s hiding behind a man.";
+
+        score.value = parseInt(score.value) - 1;
+        minusPoints(-1);
+
+    }
+
+    function questionHelp() {
+        var error = document.getElementById("questionHelpMessage");
+
+        error.style.paddingLeft = "55%";
+        error.style.fontFamily = "appleChance, Helvetica, sans-serif";
+
+        error.innerHTML = "Find the teacher, only she can help you.";
+
+        score.value = parseInt(score.value) - 1;
+        minusPoints(-1);
+
+    }
+
+    function stopAnimation() {
+
+        var er = document.getElementById("Error");
+        er.style.animationName = "none";
+    }
+
+
+    function coinStart() {
+        var coin = document.getElementById("point");
+
+        coin.style.animationName = "points";
+
+        setTimeout(coinStop, 1200);
+
+
+    }
+
+    function minusPoints(x) {
+        var coin = document.getElementById("point");
+        coin.innerHTML = x;
+
+        coin.style.animationName = "minusPoints";
+
+        setTimeout(coinStop, 1200);
+
+
+    }
+    function coinStop() {
+        var coin = document.getElementById("point");
+
+        coin.style.animationName = "none";
+
+        coin.innerHTML = "";
+
+
+    }
+</script>

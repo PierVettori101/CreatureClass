@@ -1,0 +1,111 @@
+﻿
+<style>
+
+    .houseButtonssss {
+        background-color: white;
+        border-color: black;
+        border-radius: 8px;
+        color: black;
+        width: 120px;
+        height: auto;
+        font-family: appleChance, Helvetica, sans-serif;
+        font-weight: 600;
+        font-size: 20px;
+    }
+</style>
+
+
+@using CreatureClass2.Models;
+@{
+    Team t = ViewBag.team;
+    List<Message> messages = ViewBag.Messages;
+    string sabi = ViewBag.SabiId;
+}
+@using (Html.BeginForm("MessageScreen", "Message", FormMethod.Get))
+{
+
+    @*<input type="hidden" name="teamName" value="@t.Name" />*@
+    <body style="background-image:none!important;">
+        <div style="padding-top:50px">
+
+        </div>
+
+        <div style="padding-right:90%">
+            <input type="button" value="Back to Class" style="background-color: darkgrey; 
+                                                                    border-color: black; 
+                                                                        border-radius:8px; 
+                                                                            color: white; 
+                                                                                height: auto; font-family: appleChance, Helvetica, sans-serif;
+                                                                                    font-weight: 600; font-size: 20px;"
+                                                                onclick="backToClass()"/>
+        </div>
+
+         <div style="padding-top:70px">
+
+        </div>
+
+        @foreach (Message m in messages)
+        {
+            <input type="hidden" id="@m.Id" value="@m.Id" />
+           
+
+
+                if (m.SentFrom == sabi && m.SentTo == t.Id)
+                {
+                    <div style="max-width:initial;padding-left: 50%; padding-top:10px">
+                        <div style="background-color: #bbf5f1;border-radius:12px ">
+                            @m.Body
+                        </div>
+
+                    </div>
+                }
+
+                if (m.SentFrom == t.Id)
+                {
+                    @*<div style="max-width:80%">*@
+                    <div style="max-width:50%;padding-left: 3%; padding-top:10px">
+                        <div style=" background-color: #40feb3;border-radius:12px ">
+                            @m.Body
+                        </div>
+                    </div>
+                    @*</div>*@
+                }
+           
+
+        }
+
+       
+        @*<input type="hidden" value="@t.UserName" name="team" />*@
+
+        <div style="padding-top:10px">
+
+
+
+            <input type="text" id="sendBody" name="sendBody" placeholder="Send a message to the tour opperator" style="width:50%;
+                                                                     height:40px;" />
+            <input type="submit" value="Send" name="Send" class="houseButtonssss" />
+
+
+        </div>
+    </body>
+    }
+
+<script>
+    function SendMessage() {
+        var body = document.getElementById("sendBody");
+
+        var url = '@Url.Action("SendMessage", "Message", new { user = "__id__" })';
+        window.location.href = url.replace('__id__', body.value);
+        }
+
+    function backToClass() {
+
+
+        var url = '@Url.Action("Questions", "Home", new { Id = t.Id, UserName = t.UserName, HouseName = t.HouseName, LocationId = t.LocationId, Score = t.Score, Counter = t.Counter })';
+        window.location.href = url;
+
+
+    }
+
+    
+</script>

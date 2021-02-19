@@ -1,0 +1,17 @@
+﻿@using CreatureClass2.Models
+@{
+    Team t = ViewBag.Team;
+}
+
+<body style="background-image: url(../../Content/Images/fireworks.gif); background-size:cover;background-repeat:no-repeat; padding-top:50px">
+
+    <div style="font-size: 80px; font-family:appleChance, Helvetica, sans-serif;
+                           color:white ">
+        Well done @t.UserName!
+    </div>
+    <div style="font-size: 80px; font-family:appleChance, Helvetica, sans-serif;
+                           color:white ">
+        Your score was @t.Score
+    </div>
+</body>
+

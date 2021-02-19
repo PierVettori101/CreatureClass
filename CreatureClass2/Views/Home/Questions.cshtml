@@ -1,0 +1,388 @@
+﻿@using CreatureClass2.Models
+@{
+    Team t = ViewBag.team;
+
+
+    List<Message> messages = ViewBag.Messages;
+
+    int msgCount = messages.Count();
+}
+<style>
+</style>
+
+
+<form id="myForm">
+
+    <input type="hidden" value="@t.UserName" id="teamName" name="teamName" />
+    <input type="hidden" value="@t.LocationId" name="locationId" />
+    <input type="hidden" value="@t.Counter" name="counter" />
+    <input type="hidden" value="@t.Score" name="score" id="score" />
+
+
+
+    <div style="padding-top:50px">
+    </div>
+
+
+    <div class="sos">
+        <div>
+            <img src="@Url.Content("~/Content/Images/sos.png")" id="sos" onclick="show()">
+        </div>
+
+    </div>
+    @if (msgCount > 0 && msgCount != 1)
+    {
+        <div style="font-size:20px; padding-left:80%; cursor:pointer" onclick="getInTouch()">
+            You have @msgCount new messages
+        </div>
+    }
+    else if (msgCount == 1)
+    {
+        <div style="font-size:20px; padding-left:80%; cursor:pointer" onclick="getInTouch()">
+            You have @msgCount new message
+        </div>
+    }
+
+
+    @*<div class="sos">*@
+    <div class="sos" id="sosMessage" style="display:none; font-weight:600">
+        <p id="spotHelpMessage">
+            <input type="button" value="Trouble Spotting?" onclick="spotHelp()" style="font-weight: 600; background-color:burlywood;
+                                                                                        font-family:appleChance, Helvetica, sans-serif;" />
+        </p>
+        <p id="questionHelpMessage">
+            <input type="button" value="Trouble With The Question" onclick="questionHelp()" style="font-weight: 600; background-color:burlywood;
+        font-family: appleChance, Helvetica, sans-serif;" />
+
+        </p>
+        <p>
+            <input type="button" value="Get in Touch" onclick="getInTouch()" style="font-weight: 600; background-color:burlywood;
+                                                                                        font-family:appleChance, Helvetica, sans-serif;" />
+        </p>
+    </div>
+
+    @*</div>*@
+
+
+    <div style="padding-left:70%;
+                        ">
+        <div class="pointAni" id="point">
+
+        </div>
+    </div>
+
+    <div>
+        <div class="typo">
+            Go to Location
+        </div>
+        <div style="font-family:escargo, Helvetica, sans-serif; font-size:130px; font-weight:600">
+
+            @t.Location.Letter
+        </div>
+    </div>
+
+    <div id="creatureSection" style="display:unset">
+        <div class="typo">
+            What Creature Did you spot?
+        </div>
+
+
+        <input type="text" name="answer" id="creature" style="text-align: center; font-weight: 600; font-size: 22px;
+                                                                        background-color:white; border-color:black;
+                                                                        border-radius:6px; border-width: 10px;
+                                                                        font-family: appleChance, Helvetica, sans-serif;" />
+
+
+
+        <div style="padding-top:2%">
+            <input type="button" value="Enter Answer" onclick="shower()" style=" font-size: 20px; font-weight: 600; background-color:burlywood; font-family:appleChance, Helvetica, sans-serif;" />
+        </div>
+    </div>
+
+    <div id="questionSection" style="display:none">
+        <div class="typo">
+            @t.Location.Question
+        </div>
+
+
+
+
+        <input type="text" name="answer" id="answer" style="text-align: center; font-weight: 600; font-size: 22px;
+                                                                        background-color:white; border-color:black;
+                                                                        border-radius:6px; border-width: 10px;
+                                                                        font-family: appleChance, Helvetica, sans-serif;" />
+
+
+
+        <div style="padding-top:2%">
+            <input type="button" value="Enter Answer" onclick="answerQuestion()" style="font-size:20px; font-weight: 600; background-color:burlywood; font-family:appleChance, Helvetica, sans-serif;" />
+        </div>
+    </div>
+    <div id="Error" class="aniAni">
+
+    </div>
+
+    <input type="text" value="False" name="RefreshCheck" id="RefreshCheck" />
+
+
+
+
+</form>
+
+<script>
+
+    var visable = 1;
+
+    function setVisable(x) {
+
+        visable=x;
+    }
+
+
+
+    var score = document.getElementById("score");
+
+    function getVisable() {
+        return visable;
+    }
+
+    function coinStart() {
+        var coin = document.getElementById("point");
+
+        coin.style.animationName = "points";
+
+        setTimeout(coinStop, 1200);
+
+
+    }
+
+    function minusPoints(x) {
+        var coin = document.getElementById("point");
+        coin.innerHTML = x;
+
+        coin.style.animationName = "minusPoints";
+
+        setTimeout(coinStop, 1200);
+
+
+    }
+    function coinStop() {
+        var coin = document.getElementById("point");
+
+        coin.style.animationName = "none";
+
+        coin.innerHTML = "";
+
+
+    }
+    function shower() {
+        var creature =  "@Html.Raw(HttpUtility.JavaScriptStringEncode(@t.Location.Creature))";
+
+        var error = document.getElementById("Error");
+
+        var inp = document.getElementById("creature");
+
+        if (inp.value.toUpperCase().trim() == creature.toUpperCase()) {
+
+            var picture = document.getElementById("questionSection");
+            var creatureSection = document.getElementById("creatureSection");
+            var error = document.getElementById("Error")
+            error.innerHTML = "";
+
+            var score = document.getElementById("score");
+
+            score.value = parseInt(score.value) + 3;
+
+            coinStart();
+
+
+            if (picture.style.display === "none") {
+                picture.style.display = "unset";
+            }
+            else {
+                picture.style.display = "unset";
+            }
+
+            if (creatureSection.style.display === "unset") {
+                creatureSection.style.display = "none";
+            }
+            else {
+                creatureSection.style.display = "none";
+            }
+        }
+        else {
+
+            error.innerHTML = "try again";
+
+            error.style.animationName = "mymove";
+            setTimeout(stopAnimation, 500);
+
+            var score = document.getElementById("score");
+
+            score.value = parseInt(score.value) - 1;
+
+             minusPoints(-1);
+        }
+
+    }
+    function subMit() {
+        var RefreshCheck = document.getElementById("RefreshCheck").value;
+        RefreshCheck = "True";
+        
+        //var url = '@Url.Action("Questions2", "Home", new { score = "__id__" })';
+        //window.location.href = url.replace('__id__', score.value);
+
+       
+       
+    }
+
+    function answerQuestion() {
+        var answer = "@Html.Raw(HttpUtility.JavaScriptStringEncode(@t.Location.Answer))";
+        var letter = "@Html.Raw(HttpUtility.JavaScriptStringEncode(@t.Location.Letter))";
+        var er = document.getElementById("Error");
+
+
+
+        var inp = document.getElementById("answer");
+
+        if (inp.value.toUpperCase().trim() == answer.toUpperCase()) {
+
+            coinStart();
+
+
+            score.value = parseInt(score.value) + 3;
+
+            setTimeout(subMit, 900);
+
+        }
+        else if (letter == "W" && inp.value.toUpperCase().trim() == "PLANTS") {
+
+            coinStart();
+
+
+            score.value = parseInt(score.value) + 3;
+
+            setTimeout(subMit, 900);
+        }
+        else {
+
+
+
+
+
+            er.innerHTML = "Try again";
+            er.style.animationName = "mymove";
+            setTimeout(stopAnimation, 500);
+
+
+
+            score.value = parseInt(score.value) - 1;
+            minusPoints(-1);
+
+        }
+
+    }
+
+
+
+    function show() {
+
+        var sosMessage = document.getElementById("sosMessage");
+
+
+
+
+        if (sosMessage.style.display === "none") {
+            sosMessage.style.display = "unset";
+
+
+        }
+        else {
+
+
+                sosMessage.style.display = "none";
+        }
+    }
+
+    function getInTouch() {
+
+        var team = document.getElementById("teamName");
+
+        score.value = parseInt(score.value) - 4;
+
+        var url = '@Url.Action("MessageScreen", "Message", new { score = "__id__"})';
+        minusPoints(-1);
+        var x = url.replace('__id__', parseInt(score.value));
+
+        window.location.href = x;
+    }
+
+    function spotHelp() {
+        var error = document.getElementById("spotHelpMessage");
+        error.style.paddingLeft = "55%";
+        error.style.fontFamily = "appleChance, Helvetica, sans-serif";
+        error.innerHTML = "Make sure you are standing on the exact location.";
+        score.value = parseInt(score.value) - 1;
+        minusPoints(-1);
+
+    }
+
+    function questionHelp() {
+        var error = document.getElementById("questionHelpMessage");
+
+        error.style.paddingLeft = "55%";
+        error.style.fontFamily = "appleChance, Helvetica, sans-serif";
+
+        error.innerHTML = "The answer is really close by. Look around you.";
+        score.value = parseInt(score.value) - 1;
+        minusPoints(-1);
+
+    }
+
+    function stopAnimation() {
+
+        var er = document.getElementById("Error");
+        er.style.animationName = "none";
+    }
+
+    //function bloodyWork() {
+
+    //    var sosMessage = document.getElementById("sosMessage");
+
+    //    if (getVisable() == 1) {
+
+    //        var btnSpot = document.createElement("BUTTON");
+    //        btnSpot.innerHTML = "Trouble Spotting";
+    //        btnSpot.className = "helpButtons";
+    //        btnSpot.onclick = function () {
+    //            spotHelp();
+    //        }
+
+    //        var btnQues = document.createElement("BUTTON");
+    //        btnQues.innerHTML = "Trouble With The Question";
+    //        btnQues.className = "helpButtons";
+    //        btnQues.onclick = function () {
+    //            questionHelp();
+    //        }
+
+    //        var btntouch = document.createElement("BUTTON");
+    //        btntouch.innerHTML = "Get in Touch";
+    //        btntouch.className = "helpButtons";
+    //        btntouch.onclick = function () {
+    //            getInTouch();
+    //        }
+
+    //        setVisable(0);
+
+    //        sosMessage.appendChild(btnSpot);
+    //        sosMessage.appendChild(btnQues);
+    //        sosMessage.appendChild(btntouch);
+    //    }
+    //    else {
+
+    //        sosMessageinnerHTML == "";
+    //        setVisable(1);
+    //        }
+    //}
+
+</script>
